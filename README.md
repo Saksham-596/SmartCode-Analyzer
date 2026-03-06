@@ -1,5 +1,8 @@
 # SmartCode-Analyzer
 SmartCode is a full-stack algorithmic analysis platform that provides real-time, language-agnostic time complexity predictions for C++, Java, and Python. Unlike traditional static analyzers that "guess" based on simple patterns, SmartCode leverages a architecture combining Abstract Syntax Tree (AST) structural logging.
+
 🚀 Key FeaturesMulti-Language Support: Precisely identifies complexity for C++, Python, and Java.Dual-Engine Analysis: Simultaneously runs local Python AST feature extraction and remote LLM inference.Secure Execution: Utilizes Docker containerization to sandbox code runs, preventing malicious execution and standardizing resource limits.Real-World Precision: Accurate detection of nested loops ($O(N^2)$), binary search ($O(\log N)$), and sorting ($O(N \log N)$).
+
 🛠️ The "Monster" Evolution This project represents a complete iterative engineering journey:Phase 1 (Empirical): Attempted to train ML models on noisy, hardware-dependent runtime execution data.Phase 2 (Static): Developed a custom Python AST NodeVisitor to extract structural features for Random Forest classification.Phase 3 (AI-Driven): Architected a FastAPI backend that utilizes a "Brute Force" REST implementation to bypass SDK limitations and leverage Gemini 1.5 Flash for 100% accuracy.
+
 💻 Tech StackFrontend: Next.js 14, Tailwind CSS, Monaco Editor.Backend: FastAPI, Pydantic, Python-Dotenv.Inference: Google Gemini 1.5 Flash (via REST API).Infrastructure: Docker, Vercel (Frontend), Render (Backend).
