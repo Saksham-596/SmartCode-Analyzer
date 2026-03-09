@@ -167,10 +167,8 @@ def generate_real_world_dataset():
             ]
             rows.append(row)
             success_count += 1
-            
         except Exception:
             fail_count += 1
-
     with open("real_world_ast_dataset.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
