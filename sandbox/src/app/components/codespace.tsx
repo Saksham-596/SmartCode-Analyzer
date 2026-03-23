@@ -44,12 +44,12 @@ export default function Codespace() {
         setComplexity("Analyzing...");
 
         try {
-            const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+            const backendURL = "https://smartcode-analyzer-2.onrender.com";
             const response = await fetch(`${backendURL}/predict`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-                },
+                }, 
                 body: JSON.stringify({ code: code, language: language })
             });
 
