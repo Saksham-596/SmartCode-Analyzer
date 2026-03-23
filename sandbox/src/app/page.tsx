@@ -11,7 +11,6 @@ export default function Home() {
     <div className="bg-white h-screen w-full">
       <Navbar />
       <Codespace />
-      
     </div>
   );
 }
