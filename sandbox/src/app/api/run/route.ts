@@ -1,88 +1,3 @@
-// import { NextResponse } from "next/server";
-// import {exec} from "child_process";
-// import fs from "fs/promises";
-// import path from "path";
-// import crypto from "crypto";
-// import util from "util";
-
-// // the thing is that exec thing was before async and await , so we has to convert exec into promise using util
-// const execPromise = util.promisify(exec);
-// export async function POST(req: Request) {
-//     try{
-//         const { code, language, input } = await req.json();
-//         console.log("Received:", { code, language, input });
-//         // for mulitple clicking on run button , need to create a id for a specific runn
-//         const runID = crypto.randomUUID();
-//         const tempDir =  path.join(process.cwd(),"temp"); // current working directory 
-//         await fs.mkdir(tempDir,{recursive:true}) // if directory is already it doesn't make or overwrite in that it simply use the current one and does not throw error 
-//         const Codefilepath = path.join(tempDir,`${runID}.${language === "python" ? "py" : language === "java" ? "java" : "cpp"}`);
-//         const Inputfilepath = path.join(tempDir,`${runID}.text`);
-//         await fs.writeFile(Codefilepath,code);
-//         await fs.writeFile(Inputfilepath,input || "");
-//         let output ="";
-//         try {
-//             if (language === "cpp") {
-//                 const executablePath = path.join(tempDir, `${runID}.out`);
-//                 await execPromise(`g++ ${Codefilepath} -o ${executablePath}`);
-
-//                 const { stdout, stderr } = await execPromise(
-//                     `${executablePath} < ${Inputfilepath}`,
-//                     { timeout: 2000 }
-//                 );
-
-//                 output = stderr ? `Verdict : Runtime Error:\n${stderr}` : stdout;
-//             }
-
-//             else if (language === "python") {
-//                 const { stdout, stderr } = await execPromise(
-//                     `python3 ${Codefilepath} < ${Inputfilepath}`,
-//                     { timeout: 2000 }
-//                 );
-
-//                 output = stderr ? `Verdict : Runtime Error:\n${stderr}` : stdout;
-//             }
-
-//             else if (language === "java") {
-//                 // Java requires file name to match class name
-//                 const javaFilePath = path.join(tempDir, `Main.java`);
-//                 await fs.rename(Codefilepath, javaFilePath);
-
-//                 await execPromise(`javac ${javaFilePath}`);
-
-//                 const { stdout, stderr } = await execPromise(
-//                     `java -cp ${tempDir} Main < ${Inputfilepath}`,
-//                     { timeout: 2000 }
-//                 );
-
-//                 output = stderr ? `Verdict : Runtime Error:\n${stderr}` : stdout;
-//             }
-
-//         } catch (error: any) {
-//             if (error.killed) {
-//                 output = "Verdict : Time Limit Exceeded";
-//             } else {
-//                 output = `Verdict : Compilation/Error:\n${error.stderr || error.message}`;
-//             }
-//         }
-
-//         try {
-//             await fs.unlink(Codefilepath).catch(() => {});
-//             await fs.unlink(Inputfilepath).catch(() => {});
-//         } catch (cleanupError) {
-//             console.error("failed to clean up files:", cleanupError);
-//         }
-
-//         return NextResponse.json({ output });
-
-//     }catch(error){
-//         return NextResponse.json({output : "Internal Error while running the code"} , {status:500});
-//     }
-
-// }
-
-// commenting out the docker part, it can run on my system but not on vercel
-
-
 // import {NextResponse} from "next/server";
 // import {exec} from "child_process";
 // import util from "util";
@@ -151,14 +66,14 @@
 //         );
 //     }
 // }
-// using judge0 instead of docker for deployment on vercel
+
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     try {
         const { code, language, input } = await req.json();
 
-        // 1. Map your frontend language state to JDoodle's exact required formats
+        // 1. Map frontend language state to JDoodle's exact required formats
         const JDOODLE_MAP: Record<string, { lang: string; version: string }> = {
             "cpp": { lang: "cpp17", version: "1" },      // C++ 17
             "python": { lang: "python3", version: "4" }, // Python 3
@@ -174,7 +89,7 @@ export async function POST(req: Request) {
             );
         }
 
-        // 2. Pull the credentials from Vercel's Environment Variables
+        // 2. the credentials from Vercel's Environment Variables
         const clientId = process.env.JDOODLE_CLIENT_ID;
         const clientSecret = process.env.JDOODLE_CLIENT_SECRET;
 
@@ -209,7 +124,7 @@ export async function POST(req: Request) {
             );
         }
 
-        // 5. Return the actual code output (stdout or compilation errors)
+        // 5. Return the actual code output 
         return NextResponse.json({ output: data.output });
 
     } catch (error) {
